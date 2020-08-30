@@ -1,0 +1,110 @@
+'''
+Please check the problem at 
+https://www.hackerrank.com/challenges/kundu-and-tree/problem
+'''
+import sys
+sys.setrecursionlimit(10**6)
+
+n = int(input())
+data = []
+for i in range(n-1):
+    x = input().split(' ')
+    data.append([int(x[0]),int(x[1]),x[2].strip()])
+
+tree = [0 for _ in range(n+1)]
+sett = []
+
+class node:
+  def __init__(self,index,rc,bc):
+    self.index = index
+    self.rc = rc
+    self.bc = bc
+    self.setID = None
+  
+  def __repr__(self):
+    return f'{self.index} {self.setID}'
+
+class rbset:
+  def __init__(self,noe,colour,setID):
+    self.setID = setID
+    self.noe = noe
+    self.colour = colour
+    sett.append(self)
+    
+def cleanTree(parent):
+  global tree
+  for c in parent.rc:
+    for i in range(len(c.rc)):
+      if c.rc[i].index==parent.index:
+        del c.rc[i]
+        break
+    if len(c.rc)+len(c.bc)>0:
+      cleanTree(c)
+  for nbr in parent.bc:
+    for j in range(len(nbr.bc)):
+      if nbr.bc[j].index==parent.index:
+        del nbr.bc[j]
+        break
+    if len(nbr.bc)+len(nbr.rc)>0:
+      cleanTree(nbr)
+
+def classify(parent,gp):
+  global sett
+  if  parent.setID==None:
+    if len(parent.bc)>0:
+      parent.setID = rbset(1,'b',len(sett)).setID
+    else:
+      if sett[gp.setID].colour=='b':
+        parent.setID = rbset(1,'r',len(sett)).setID
+      else:
+        parent.setID = gp.setID
+        sett[parent.setID].noe+=1
+  if sett[parent.setID].colour=='b':
+    sett[parent.setID].noe = sett[parent.setID].noe+len(parent.bc)
+    for b in parent.bc:
+      b.setID = parent.setID
+      classify(b,parent)
+    for r in parent.rc:
+      classify(r,parent)
+  else:
+    for red in parent.rc:
+      classify(red,parent)
+
+
+for con in data:
+  if tree[con[0]]==0:
+    tree[con[0]] = node(con[0],[],[])
+  if tree[con[1]]==0:
+    tree[con[1]] = node(con[1],[],[])
+  if con[2]=='b':
+    tree[con[0]].bc.append(tree[con[1]])
+    tree[con[1]].bc.append(tree[con[0]])
+  else:
+    tree[con[0]].rc.append(tree[con[1]])
+    tree[con[1]].rc.append(tree[con[0]])
+
+cleanTree(tree[1])
+parent = tree[1]
+gp = node(0,[],[])
+gp.setID = rbset(0,'b',0).setID
+parent.setID = rbset(1,'b',len(sett)).setID if len(parent.bc)>0 else None
+classify(parent,gp)
+
+
+nc2=nc3=0
+s1=s2=s3=0
+for i in range(1,len(sett)):
+  s1 = s1+sett[i].noe
+for i in range(1,len(sett)):
+  n2 = sett[i].noe*sett[i].noe
+  n3 = n2*sett[i].noe
+  s2 = s2+n2
+  s3 = s3+n3
+  if sett[i].colour=='r':
+    nc2 = nc2+((n2-sett[i].noe)//2)*(s1-sett[i].noe)
+    nc3 = nc3+(n3-3*n2+2*sett[i].noe)//6
+
+result = nc3+nc2+(pow(s1,3)-3*s1*s2+2*s3)/6
+
+print(int(result%1000000007))
+

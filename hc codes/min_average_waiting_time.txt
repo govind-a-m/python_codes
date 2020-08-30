@@ -1,0 +1,52 @@
+'''
+please check problem statement at
+https://www.hackerrank.com/challenges/minimum-average-waiting-time
+'''
+
+import os
+import sys
+from heapq import heappush, heappop
+
+def add_to_waitlist(time,nof_ord,lend,data):
+  for i in range(nof_ord+1,lend):
+    if data[i][0]<=time:
+      continue
+    return i-1
+  return lend-1
+
+def minimumAverage(data):
+    data = sorted(data)
+    lend = len(data)
+    heap = []
+    time_taken = data[0][1]
+    time = data[0][1]+data[0][0]
+    nof_ord = 0
+    prev_nof = 0
+    total_ord = 1
+    while total_ord<lend:
+        nof_ord = add_to_waitlist(time,nof_ord,lend,data)
+        for j in range(prev_nof+1,nof_ord+1):
+            heappush(heap,[data[j][1],data[j][0]])
+        if len(heap)>0:
+          next_ord = heappop(heap)
+        else:
+          next_ord = [data[total_ord][1],data[total_ord][0]]
+          nof_ord+=1
+        time_taken = time_taken+time-next_ord[1]+next_ord[0]
+        total_ord+=1
+        prev_nof = nof_ord
+        time =  time+next_ord[0]
+    return (time_taken//lend)
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input())
+
+    customers = []
+
+    for _ in range(n):
+        customers.append(list(map(int, input().rstrip().split())))
+    result = minimumAverage(customers)
+    fptr.write(str(result) + '\n')
+    fptr.close()

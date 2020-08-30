@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myUL {
+  list-style-type: none;
+  padding : 0;
+  margin: 0;
+}
+
+#myUL li a {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 3px;
+  text-decoration: none;
+  font-size: 14px;
+  color: black;
+  display: block;
+   text-align: left;
+  
+}
+
+#myUL li a:hover:not(.header) {
+  background-color: #eee;
+}
+#myInput1 {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 12px 20px 12px 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+#myUL1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#myUL1 li a {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 3px;
+  text-decoration: none;
+  font-size: 14px;
+  color: black;
+  display: block;
+  text-align: left;
+}
+
+#myUL1 li a:hover:not(.header) {
+  background-color: #eee;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+
+/* Clearfix (clear floats) */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  float: right;
+}
+.button:hover:not(.header) {
+  background-color: #0c3f25;
+}
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="column">
+  <input type="text" id="myInput" onkeyup="myFunction(this.id);" placeholder="Search for asset no" serialno=-1>
+  </div>
+  <div class="column">
+	<input type="text" id="myInput1" onkeyup="myFunction1(this.id);" placeholder="transfer the asset to" serialno=-1>
+  </div>
+</div>
+<div class="row">
+	<div class="column">
+    <ul id="myUL">
+          <li><a id=1 onclick="selectitem(this.id);">Adele</a></li>
+          <li><a id=2 onclick="selectitem(this.id);">Agnes</a></li>
+          <li><a id=3 onclick="selectitem(this.id);">Billy</a></li>
+          <li><a id=4 onclick="selectitem(this.id);">Bob</a></li>
+          <li><a id=5 onclick="selectitem(this.id);">Calvin</a></li>
+          <li><a id=6 onclick="selectitem(this.id);">Christina</a></li>
+          <li><a id=7 onclick="selectitem(this.id);">Cindy</a></li>
+        </ul>
+    </div>
+  <div class="column">
+   <ul id="myUL1">
+        <li><a id=11 onclick="selectitem1(this.id);">Adele</a></li>
+        <li><a id=21 onclick="selectitem1(this.id);">Agnes</a></li>
+        <li><a id=31 onclick="selectitem1(this.id);">Billy</a></li>
+        <li><a id=41 onclick="selectitem1(this.id);">Bob</a></li>
+        <li><a id=51 onclick="selectitem1(this.id);">Calvin</a></li>
+        <li><a id=61 onclick="selectitem1(this.id);">Christina</a></li>
+        <li><a id=71 onclick="selectitem1(this.id);">Cindy</a></li>
+      </ul>
+  </div>
+</div>
+<input type="button" class="button" value="send mail" onclick="sendMail();">
+<p> please allow ActiveX controls by clicking yes to pop-ups</p>
+<script>
+
+function myFunction(id) {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById(id);
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myUL");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+function myFunction1(id) {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById(id);
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myUL1");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+function selectitem(id)
+{document.getElementById("myInput").value=document.getElementById(id).text;
+ document.getElementById("myInput").serialno=id;
+ console.log(document.getElementById("myInput").serialno)
+ ul = document.getElementById("myUL");
+ li = ul.getElementsByTagName("li");
+ for (i = 0; i < li.length; i++) 
+ {li[i].style.display = "none";
+ }
+}
+ function selectitem1(id)
+{document.getElementById("myInput1").value=document.getElementById(id).text;
+ document.getElementById("myInput1").serialno=id;
+ console.log(document.getElementById("myInput1").serialno)
+ ul = document.getElementById("myUL1");
+ li = ul.getElementsByTagName("li");
+ for (i = 0; i < li.length; i++) 
+ {li[i].style.display = "none";
+ }
+}
+
+function sendMail()
+{ 
+if(document.getElementById("myInput1").serialno!=-1 && document.getElementById("myInput").serialno!=-1)
+{ document.getElementById("myInput1").serialno=-1;
+document.getElementById("myInput").serialno=-1;
+ console.log(document.getElementById("myInput").serialno)
+ console.log(document.getElementById("myInput1").serialno)
+var htmlstring="<table style="+"border-collapse: collapse; border:1px solid black"+"><tr ><th>asset no</th><th>"+document.getElementById("myInput").value+"</th></tr><tr><th>transfer the asset to</th><th>"+document.getElementById("myInput1").value+"</th></tr></table>"
+var outlookApp = new ActiveXObject("Outlook.Application");
+var nameSpace = outlookApp.getNameSpace("MAPI");
+mailFolder = nameSpace.getDefaultFolder(6);
+mailItem = mailFolder.Items.add('IPM.Note.FormA');
+mailItem.Subject = "Me";
+mailItem.To = "govindmalaghan@gmail.com";
+mailItem.HTMLBody = htmlstring;
+mailItem.Send();
+alert("mail has been sent")
+} else {
+alert("please enter valid details");
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+'''
+Please check problem statement at 
+https://www.hackerrank.com/challenges/and-xor-or
+
+import os
+import sys
+
+
+def andXorOr(arr):
+    arr.insert(0,0)
+    lena = len(arr)
+    right = [0]*lena
+    left = [0]*lena
+    for i in range(2,lena):
+        j = i-1
+        while j>0:
+            if arr[j]<arr[i]:
+                left[i] = j
+                break
+            elif arr[j]>=arr[i]:
+                right[j] = i
+                j = left[j]
+    mx = 0
+    for i in range(1,lena):
+        xor_left,xor_right = 0,0
+        if left[i]!=0:
+            xor_left = arr[i]^arr[left[i]]
+        if right[i]!=0:
+            xor_right = arr[i]^arr[right[i]]
+        mx = max(mx,xor_left,xor_right)
+    return mx
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    a_count = int(input())
+    a = list(map(int, input().rstrip().split()))
+    result = andXorOr(a)
+    fptr.write(str(result) + '\n')
+    fptr.close()

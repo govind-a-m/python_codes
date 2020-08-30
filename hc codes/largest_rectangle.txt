@@ -1,0 +1,51 @@
+'''
+'''
+problem statement at
+https://www.hackerrank.com/challenges/largest-rectangle 
+'''
+import math
+import os
+import random
+import re
+import sys
+
+
+def largestRectangle(arr):
+  lena = len(arr)
+  nfgt_arr = [1]*lena
+  ptr = [0]*lena
+  ptr[-1] =  lena
+  endup = [0]*(lena+1)
+  for i in range(lena-2,-1,-1):
+    j = i+1
+    while j<lena:
+      if arr[j]>arr[i]:
+        nfgt_arr[i] = nfgt_arr[i]+nfgt_arr[j]
+        ptr[i] = ptr[j]
+        j = ptr[j]
+      elif arr[j]<arr[i]:
+        ptr[i] = j
+        endup[j]+=1
+        k = ptr[j]
+        while k<lena:
+          endup[k]+=1
+          k = ptr[k]
+        break
+      else:
+        nfgt_arr[i] = nfgt_arr[i]+nfgt_arr[j]
+        ptr[i] = ptr[j]
+        break
+  mx = arr[0]*(nfgt_arr[0]+endup[0])
+  for i in range(1,lena):
+    prd = arr[i]*(nfgt_arr[i]+endup[i]) 
+    if prd>mx:
+      mx = prd 
+  return mx
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    n = int(input())
+    h = list(map(int, input().rstrip().split()))
+    result = largestRectangle(h)
+    fptr.write(str(result) + '\n')
+    fptr.close()
